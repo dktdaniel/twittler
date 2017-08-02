@@ -1,26 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style type="text/css">
+      #jumbo {
+        background-color: #f4511e; /* Orange */
+        color: #ffffff;
+        margin: 0px;
+        text-align: center;
+      }
+
+      #getnew {
+        margin: 0px;
+      }
+
+      #tweets-table {
+        margin: 0px;
+      }
+
+
+
+    </style>
   </head>
   <body>
+    <div class="container-fluid">
+
+      <!-- Header !-->
+      <div class="jumbotron" id="jumbo">
+        <h1>twittler</h1>
+        <p>it's like Twitter, but worse!</p>
+      </div>
+
+
+      <!-- Click this to display new tweets !-->
+      <button onclick="getTweets()" class="btn btn-default btn-block">
+      <h3>new tweets</h3>
+      </button>
+
+      <!-- Display tweets !-->
+      <div class="tweets" id="tweets-table">
+        <div class="table-responsive">
+              <table class="table table-hover" id="tweets">
+              <thead>
+                <tr>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+              </table>
+        </div>
+      </div>
+
+      
+
+  </div>
     <script>
+      var $tweets = $('tbody');
 
-      $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
-
+      function getTweets() {
         var index = streams.home.length - 1;
         while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
+        var tweet = streams.home[index];
+        $('#tweets > tbody:last-child').append(
+          `<tr class="${tweet.user}"">
+              <td>
+                <h3 class="text-primary">
+                  <a class="link">${tweet.user}</a>
+                </h3>
+              </td>
+              <td>
+                <h3>${tweet.message}
+                  </br>
+                    <small class="text-muted">${tweet.created_at}
+                    </small>
+                </h3>
+              </td>
+          </tr>`
+        );
+        index -= 1;
         }
 
-      });
+        //click to show only tweets by user
+        $('.link').click(function() {
+          $('tr').not($('.' + ($(this)[0].text))).hide();
+        })
+
+      }
+
+
+      
 
     </script>
   </body>
